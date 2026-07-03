@@ -209,4 +209,8 @@ def main() -> None:
         if RUN_ONCE:
             log.info("RUN_ONCE -> one cycle done, exiting (cron mode).")
             break
-        time.sleep(max(1.0, PREDICT_EVERY_SEC 
+        time.sleep(max(1.0, PREDICT_EVERY_SEC - (time.time() - t0)))
+
+
+if __name__ == "__main__":
+    main()
