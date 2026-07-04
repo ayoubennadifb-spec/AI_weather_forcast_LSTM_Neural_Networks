@@ -135,7 +135,8 @@ def write_forecast(dst_client, result, measurement: str) -> int:
     try:
         pmv_df = comfort.pmv_ppd_frame(temps, rhs, when)
         pmv_values = pmv_df["pmv"].to_numpy(dtype=float)
-    except Exception:  # noqa: BLE001 – pythermalcomfort not available, skip gracefully
+    except Exception as _pmv_err:  # noqa: BLE001
+        log.warning("PMV calc failed — writing NaN for all points: %s", _pmv_err)
         pmv_values = np.full(len(frame), float("nan"))
 
     wapi = dst_client.write_api(write_options=SYNCHRONOUS)
